@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="cleartype" content="on">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Blog Polanco">
+  <meta name="application-name" content="Blog Polanco">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="msapplication-tap-highlight" content="no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Blog Polanco</title>
+
+  <style>
+    @-ms-viewport {
+      width: device-width;
+    }
+  </style>
+  <link rel="stylesheet" href="/css/styles.css">
+
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue/1.0.24/vue.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue-resource/0.8.0/vue-resource.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vue-router/0.7.13/vue-router.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vuex/0.6.3/vuex.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.13.0/moment.js"></script>
+  <script>
+    Vue.config.debug = true
+    Vue.config.devtools = true
+    Vue.http.options.root = 'http://localhost:4000/api'
+  </script>
+</head>
+<body>
+  <div id="target"></div>
+  <script src="/js/bundle.js"></script>
+</body>
+</html>

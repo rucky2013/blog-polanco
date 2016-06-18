@@ -1,3 +1,11 @@
+client/dist/js
+client/dist/css
+
+server/target
+server/.idea
+server/*.iml
+
+
 # Logs
 logs
 *.log

@@ -1,0 +1,29 @@
+{
+  "private": true,
+  "scripts": {
+    "build:js": "rollup -c",
+    "build:styles": "postcss -c postcss.config.js",
+    "dev": "npm-run-all --parallel start build:styles watch:*",
+    "start": "live-server dist --entry-file=index.html --no-browser --port=3000 --quiet",
+    "watch:js": "rollup -c -w",
+    "watch:styles": "postcss -c postcss.config.js -w"
+  },
+  "dependencies": {
+    "vuex-router-sync": "^1.0.0"
+  },
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "live-server": "^1.0.0",
+    "npm-run-all": "^2.1.1",
+    "postcss-cli": "^2.5.2",
+    "postcss-custom-properties": "^5.0.1",
+    "postcss-import": "^8.1.2",
+    "postcss-nested": "^1.0.0",
+    "postcss-nested-props": "^1.1.1",
+    "rollup": "^0.31.1",
+    "rollup-plugin-commonjs": "^3.0.0",
+    "rollup-plugin-node-resolve": "^1.7.0",
+    "rollup-watch": "^2.4.0",
+    "sugarss": "^0.1.4"
+  }
+}
