@@ -23,9 +23,9 @@ export default {
         <div class="post">
           <header class="post__header">
             <h2 class="post__title" v-text="post.title"></h2>
+            <time :datetime="createdAt" v-text="post.createdAt | humanDate"></time>
             <a v-link="{ name: 'posts.edit', params: { id: post.id } }">Edit post</a>
             <button @click="tryRemovePost(post)">Delete</button>
-            <time :datetime="createdAt" v-text="post.createdAt | humanDate"></time>
           </header>
           <main class="post__content" v-html="post.body | markdown"></main>
         </div>
