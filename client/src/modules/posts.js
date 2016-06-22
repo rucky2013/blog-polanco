@@ -3,7 +3,11 @@ export default {
     loading: false,
     posts: JSON.parse(localStorage.getItem('posts')) || [],
     post: {},
-    error: null
+    error: null,
+    newPost: {
+      title: '',
+      body: ''
+    }
   },
 
   mutations: {
@@ -39,6 +43,10 @@ export default {
     },
     'posts/STORE_SUCCEDED'(state, post) {
       state.posts.push(post)
+      state.newPost = {
+        title: '',
+        body: ''
+      }
       state.loading = false
     },
     'posts/STORE_FAILED'(state, error = 'Something went wrong') {
@@ -52,6 +60,7 @@ export default {
     'posts/REPLACE_SUCCEDED'(state, post) {
       const idx = state.posts.findIndex(p => p.id === post.id)
       state.posts[idx] = post
+      state.post = {}
       state.loading = false
     },
     'posts/REPLACE_FAILED'(state, error = 'Something went wrong') {
@@ -90,6 +99,7 @@ export const loading = ({ posts: { loading } }) => loading
 export const posts = ({ posts: { posts } }) => posts
 export const post = ({ posts: { post } }) => post
 export const error = ({ posts: { error } }) => error
+export const newPost = ({ posts: { newPost} }) => newPost
 
 
 export const fetch = ({ dispatch }) => {

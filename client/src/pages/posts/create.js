@@ -1,5 +1,6 @@
 import {
   error,
+  newPost,
   store
 } from '../../modules/posts'
 
@@ -10,15 +11,15 @@ export default {
     <div class="container">
       <h2>Create Post</h2>
 
-      <form class="create-post" @submit.prevent="store(post)">
+      <form class="create-post" @submit.prevent="store(newPost)">
         <label>
           <span>Title</span>
-          <input type="text" placeholder="Title" v-model="post.title"/>
+          <input type="text" placeholder="Title" v-model="newPost.title"/>
         </label>
 
         <label>
           <span>Body</span>
-          <textarea placeholder="Body" v-model="post.body"></textarea>
+          <textarea placeholder="Body" v-model="newPost.body"></textarea>
         </label>
 
         <output v-if="!!error" v-text="error"></output>
@@ -28,18 +29,10 @@ export default {
     </div>
   `,
 
-  data() {
-    return {
-      post: {
-        title: '',
-        body: ''
-      }
-    }
-  },
-
   vuex: {
     getters: {
-      error
+      error,
+      newPost
     },
     actions: {
       store

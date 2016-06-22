@@ -10,7 +10,8 @@ import {
   error as commentsError,
   fetch as fetchComments,
   store as storeComment,
-  remove as removeComment
+  remove as removeComment,
+  newComment
 } from '../../modules/comments'
 
 export default {
@@ -28,6 +29,8 @@ export default {
           </header>
           <main class="post__content" v-html="post.body | markdown"></main>
         </div>
+
+        <hr />
 
         <section class="comments">
           <h3>Comments</h3>
@@ -70,21 +73,14 @@ export default {
     this.fetchComments(id)
   },
 
-  data() {
-    return {
-      newComment: {
-        body: ''
-      }
-    }
-  },
-
   vuex: {
     getters: {
       loadingPost,
       post,
       loadingComments,
       comments,
-      commentsError
+      commentsError,
+      newComment
     },
     actions: {
       findPost,

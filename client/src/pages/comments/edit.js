@@ -34,9 +34,8 @@ export default {
   `,
 
   attached() {
-    const postId = parseInt(this.$route.params.postId, 10)
     const id = parseInt(this.$route.params.id, 10)
-    this.find(postId, id)
+    this.find(id)
   },
 
   vuex: {

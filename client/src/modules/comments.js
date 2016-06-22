@@ -3,7 +3,10 @@ export default {
     loading: false,
     comments: [],
     comment: {},
-    error: null
+    error: null,
+    newComment: {
+      body: ''
+    }
   },
   mutations: {
     'comments/FETCH_REQUESTED'(state) {
@@ -37,6 +40,9 @@ export default {
     },
     'comments/STORE_SUCCEDED'(state, comment) {
       state.comments.push(comment)
+      state.newComment = {
+        body: ''
+      }
       state.loading = false
     },
     'comments/STORE_FAILED'(state, error = 'Something went wrong') {
@@ -50,6 +56,7 @@ export default {
     'comments/REPLACE_SUCCEDED'(state, comment) {
       const idx = state.comments.findIndex(c => c.id === comment.id)
       state.comments[idx] = comment
+      state.comment = {}
       state.loading = false
     },
     'comments/REPLACE_FAILED'(state, error = 'Something went wrong') {
@@ -75,6 +82,7 @@ export const loading = ({ comments: { loading } }) => loading
 export const comments = ({ comments: { comments } }) => comments
 export const comment = ({ comments: { comment } }) => comment
 export const error = ({ comments: { error } }) => error
+export const newComment = ({ comments: { newComment } }) => newComment
 
 export const fetch = ({ dispatch }, postId) => {
   dispatch('comments/FETCH_REQUESTED')
@@ -86,10 +94,10 @@ export const fetch = ({ dispatch }, postId) => {
   })
 }
 
-export const find = ({ dispatch }, postId, id) => {
+export const find = ({ dispatch }, id) => {
   dispatch('comments/FIND_REQUESTED')
 
-  Vue.http.get(`posts/${postId}/comments/${id}`).then(({ data:comment }) => {
+  Vue.http.get(`comments/${id}`).then(({ data:comment }) => {
     dispatch('comments/FIND_SUCCEDED', comment)
   }).catch(({ data: { message:error } }) => {
     dispatch('comments/FIND_FAILED', error)
@@ -109,7 +117,7 @@ export const store = ({ dispatch }, postId, comment) => {
 export const replace = ({ dispatch }, postId, comment) => {
   dispatch('comments/REPLACE_REQUESTED')
 
-  Vue.http.put(`posts/${postId}/comments/${comment.id}`, comment).then(({ data:comment }) => {
+  Vue.http.put(`comments/${comment.id}`, comment).then(({ data:comment }) => {
     dispatch('comments/REPLACE_SUCCEDED', comment)
     dispatch('router/ROUTE_CHANGED', { path: `/posts/${postId}` })
   }).catch(({ data: { message:error } }) => {
@@ -120,7 +128,7 @@ export const replace = ({ dispatch }, postId, comment) => {
 export const remove = ({ dispatch }, postId, comment) => {
   dispatch('comments/REMOVE_REQUESTED')
 
-  Vue.http.delete(`posts/${postId}/comments/${comment.id}`).then(() => {
+  Vue.http.delete(`comments/${comment.id}`).then(() => {
     dispatch('comments/REMOVE_SUCCEDED', comment)
     dispatch('router/ROUTE_CHANGED', { path: `/posts/${postId}` })
   }).catch(({ data: { message:error } }) => {

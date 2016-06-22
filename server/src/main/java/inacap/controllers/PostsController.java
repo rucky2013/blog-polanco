@@ -1,8 +1,11 @@
 package inacap.controllers;
 
+import inacap.collection.CommentsCollection;
 import inacap.collection.PostsCollection;
+import inacap.models.Comment;
 import inacap.models.Message;
 import inacap.models.Post;
+import inacap.requests.CommentRequest;
 import inacap.requests.PostRequest;
 
 import javax.ws.rs.*;
@@ -40,6 +43,18 @@ public class PostsController {
         }
     }
 
+    @GET
+    @Path("{postId}/comments")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Comment> index(@PathParam("postId") int postId) {
+        try {
+            return CommentsCollection.fetch(postId);
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return new ArrayList<>();
+        }
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
@@ -56,6 +71,30 @@ public class PostsController {
             Post post = PostsCollection.store(req.title, req.body);
             if (post != null)
                 return Response.ok(post).build();
+            throw new Exception("Something went wrong");
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+            return Response.status(500).entity(new Message(ex.getMessage())).build();
+        }
+    }
+
+    @POST
+    @Path("{postId}/comments")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response store(@PathParam("postId") int postId, CommentRequest req) {
+        try {
+            if (req == null)
+                throw new Exception("Comment required");
+            req.validate();
+        } catch (Exception ex) {
+            return Response.status(422).entity(new Message(ex.getMessage())).build();
+        }
+
+        try {
+            Comment comment = CommentsCollection.store(postId, req.body);
+            if (comment != null)
+                return Response.ok(comment).build();
             throw new Exception("Something went wrong");
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
