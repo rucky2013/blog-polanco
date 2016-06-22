@@ -1,5 +1,5 @@
 :root
-  background-color: var(--bg)
+  background-color: var(--doc)
   box-sizing: border-box
   color: var(--fg)
   font:
@@ -23,56 +23,68 @@
   margin: 0
   padding: 0
 
-::before,
-::after
-  text-decoration: inherit
-  vertical-align: inherit
-
 h1
-  font-size: 1.375rem
-  margin-bottom: 1.5rem
+  font-size: 22px
+  margin-bottom: 20px
 
 h2
+  font-size: 32px
+
+h3
   font:
-    size: 1rem
+    size: 15px
     weight: 700
-  margin-bottom: 0.75rem
   text-transform: uppercase
 
+hr
+  margin:
+    bottom: 20px
+    top: 20px
+  border: 1px solid var(--muted)
+
+nav
+  display: flex
+
+  a
+    font:
+      size: 15px
+      weight: 700
+    line-height: 48px
+    padding:
+      left: 10px
+      right: 10px
+
 a
-  border-bottom: 1px solid transparent
   color: var(--accent)
-  outline: none
   text-decoration: none
-  transition: all 200ms linear
 
   &:active
-    outline: inherit
+    outline: none
 
   &:hover
     opacity: 0.8
+time
+  color: var(--muted)
+  font-size: 13px
+
+a,
+button,
+input,
+label,
+textarea
+  touch-action: manipulation
 
 button
-  background-color: var(--bg2)
-  border: 0.21429em solid transparent
-  color: white
-  cursor: pointer
+  background-color: var(--bg)
+  border: none
+  height: 48px
   font:
-    size: 0.875rem
+    size: 15px
     weight: 700
-  height: 3.42857em
-  margin:
-    top: 0.75rem
-    bottom: 0.75rem
   padding:
-    left: 1.71429em
-    right: 1.71429em
-  text-transform: uppercase
-  touch-action: manipulation
-  transform: perspective(1em)
-  transition: tranform 167ms cubic-bezier(0.1, 0.9, 0.2, 1) 0ms
+    left: 20px
+    right: 20px
   user-select: none
-  will-change: transform
 
   &:active
     transform: scale(0.975)
@@ -81,55 +93,96 @@ button
     outline: none
 
   &:hover
-    border-color: var(--accent)
+    background-color: var(--accent)
 
   &::-moz-focus-inner
     border: none
-
-nav
-  display: flex
-
-  > a
-    display: block
-    font:
-      size: 0.875rem
-      weight: 700
-    line-height: 48px
-    padding:
-      left: 10px
-      right: 10px
-    text-transform: uppercase
-    touch-action: manipulation
-    user-select: none
-
-input, textarea
-  background-color: var(--bg2)
-  border: 3px solid transparent
-
-  &:hover
-    border-color: var(--accent)
-
-input
-  height: 48px
-  padding: 0 10px
-
-textarea
-  height: 240px
-  padding: 10px
 
 form
   display: flex
   flex-direction: column
 
-label
-  display: flex
-  flex-direction: column
-  margin:
-    top: 10px
-    bottom: 10px
+  > *:not(:first-child):not(:last-child)
+    margin:
+      bottom: 10px
+      top: 10px
 
-  > span
+  label
+    display: flex
+    flex-direction: column
+
+  span,
+  legend
+    cursor: default
+    font:
+      size: 15px
+      weight: 700
     margin-bottom: 5px
+    touch-action: manipulation
+    user-select: none
 
-button[type="submit"]
-  margin-top: 10px
+  fieldset
+    border: none
+
+    label
+      align-items: center
+      flex-direction: row
+      height: 48px
+
+      span
+        font:
+          size: 16px
+          weight: 300
+        margin:
+          bottom: 0
+          left: 5px
+        text-transform: none
+
+input:not([type='checkbox']):not([type='radio']),
+select,
+textarea
+  background-color: var(--bg)
+  border: none
+  height: 48px
+  padding:
+    left: 10px
+    right: 10px
+
+  &:active,
+  &:focus,
+  &:invalid
+    outline: none
+
+  &:focus
+    background-color: var(--secondary)
+
+textarea
+  height: 240px
+  padding:
+    bottom: 10px
+    top: 10px
+  resize: vertical
+
+select
+  padding-right: 0px
+
+  option
+    &:checked,
+    &:hover
+      color: inherit
+      background-color: var(--accent)
+
+button[type='submit']
+  background-color: var(--accent)
+
+  &[disabled]
+    cursor: not-allowed !important
+    opacity: 0.5
+
+article p
+  margin:
+    bottom: 10px
+    top: 10px
+
+code
+  font-family: consolas

@@ -1,9 +1,11 @@
 package inacap.controllers;
 
-import inacap.collection.PostCollection;
+import inacap.collection.CommentsCollection;
+import inacap.collection.PostsCollection;
+import inacap.models.Comment;
 import inacap.models.Message;
 import inacap.models.Post;
-import inacap.requests.PostRequest;
+import inacap.requests.CommentRequest;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -11,17 +13,17 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("/posts")
-public class PostController {
+@Path("/posts/{postId}/comments")
+public class CommentsController {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Post> index() {
+    public List<Comment> index(@PathParam("postId") int postId) {
         try {
-            return PostCollection.fetch();
+            return CommentsCollection.fetch(postId);
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
-            return new ArrayList<Post>();
+            return new ArrayList<>();
         }
     }
 
@@ -30,10 +32,10 @@ public class PostController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response show(@PathParam("id") int id) {
         try {
-            Post post = PostCollection.find(id);
-            if(post != null)
-                return Response.ok(post).build();
-            return Response.status(404).entity(new Message("Post not found.")).build();
+            Comment comment = CommentsCollection.find(id);
+            if (comment != null)
+                return Response.ok(comment).build();
+            return Response.status(404).entity(new Message("Comment not found")).build();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return Response.status(500).entity(new Message(ex.getMessage())).build();
@@ -43,18 +45,20 @@ public class PostController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response store(PostRequest req) {
+    public Response store(@PathParam("postId") int postId, CommentRequest req) {
         try {
+            if (req == null)
+                throw new Exception("Comment required");
             req.validate();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             return Response.status(422).entity(new Message(ex.getMessage())).build();
         }
 
         try {
-            Post post = PostCollection.store(req.title, req.body);
-            if(post != null)
-                return Response.ok(post).build();
-            throw new Exception("Something went wrong.");
+            Comment comment = CommentsCollection.store(postId, req.body);
+            if (comment != null)
+                return Response.ok(comment).build();
+            throw new Exception("Something went wrong");
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return Response.status(500).entity(new Message(ex.getMessage())).build();
@@ -65,16 +69,20 @@ public class PostController {
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") int id, PostRequest req) {
+    public Response update(@PathParam("id") int id, CommentRequest req) {
         try {
+            if (req == null)
+                throw new Exception("Comment required");
             req.validate();
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             return Response.status(422).entity(new Message(ex.getMessage())).build();
         }
 
         try {
-            PostCollection.replace(id, req.title, req.body);
-            return Response.status(200).build();
+            Comment comment = CommentsCollection.replace(id, req.body);
+            if (comment == null)
+                return Response.status(404).entity(new Message("Comment not found")).build();
+            return Response.status(200).entity(comment).build();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return Response.status(500).entity(new Message(ex.getMessage())).build();
@@ -86,8 +94,10 @@ public class PostController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") int id) {
         try {
-            PostCollection.remove(id);
-            return Response.status(204).build();
+            boolean removed = CommentsCollection.remove(id);
+            if (removed)
+                return Response.status(204).build();
+            return Response.status(404).entity(new Message("Comment not found")).build();
         } catch (Exception ex) {
             System.err.println(ex.getMessage());
             return Response.status(500).entity(new Message(ex.getMessage())).build();

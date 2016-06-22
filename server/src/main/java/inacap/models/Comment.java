@@ -5,26 +5,18 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
-public class Post {
+public class Comment {
 
     private int id;
-    private String title;
     private String body;
     private Date createdAt;
+    private int postId;
 
-    public Post(int id, String title, String body, Date createdAt) {
+    public Comment(int id, String body, Date createdAt, int postId) {
         this.id = id;
-        this.title = title;
         this.body = body;
         this.createdAt = createdAt;
-    }
-
-    public Post(String title, String body) {
-        this.title = title;
-        this.body = body;
-    }
-
-    public Post() {
+        this.postId = postId;
     }
 
     public int getId() {
@@ -33,14 +25,6 @@ public class Post {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getBody() {
@@ -62,4 +46,11 @@ public class Post {
         this.createdAt = createdAt;
     }
 
+    public int getPostId() {
+        return postId;
+    }
+
+    public void setPostId(int postId) {
+        this.postId = postId;
+    }
 }

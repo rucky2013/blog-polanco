@@ -1,8 +1,8 @@
-import HomePage from './pages/home'
 import PostsIndexPage from './pages/posts/index'
 import PostsShowPage from './pages/posts/show'
 import PostsCreatePage from './pages/posts/create'
 import PostsEditPage from './pages/posts/edit'
+import CommentsEditPage from './pages/comments/edit'
 import AboutPage from './pages/about'
 import NotFoundPage from './pages/not-found'
 import setTitle from './utils/set-title'
@@ -14,15 +14,6 @@ const router = new VueRouter({
 })
 
 router.map({
-  '/': {
-    name: 'home',
-    component: HomePage
-  },
-  '/about': {
-    name: 'about',
-    title: 'About',
-    component: AboutPage
-  },
   '/blog': {
     name: 'posts.index',
     title: 'Blog',
@@ -42,10 +33,24 @@ router.map({
     title: 'Edit Post',
     component: PostsEditPage
   },
+  '/posts/:postId/comments/:id/edit': {
+    name: 'comments.edit',
+    title: 'Edit Comment',
+    component: CommentsEditPage
+  },
+  '/about': {
+    name: 'about',
+    title: 'About',
+    component: AboutPage
+  },
   '*': {
     title: 'Not Found',
     component: NotFoundPage
   }
+})
+
+router.redirect({
+  '/': '/blog'
 })
 
 router.afterEach(({ to: { title } }) => setTitle(title))

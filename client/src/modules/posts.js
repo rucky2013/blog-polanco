@@ -20,6 +20,19 @@ export default {
       state.error = error
       state.loading = false
     },
+    'posts/FIND_REQUESTED'(state) {
+      state.error = null
+      state.post = {}
+      state.loading = true
+    },
+    'posts/FIND_SUCCEDED'(state, post) {
+      state.post = post
+      state.loading = false
+    },
+    'posts/FIND_FAILED'(state, error = 'Something went wrong') {
+      state.error = error
+      state.loading = false
+    },
     'posts/STORE_REQUESTED'(state) {
       state.error = null
       state.loading = true
@@ -32,15 +45,28 @@ export default {
       state.error = error
       state.loading = false
     },
-    'posts/FIND_REQUESTED'(state) {
+    'posts/REPLACE_REQUESTED'(state) {
       state.error = null
       state.loading = true
     },
-    'posts/FIND_SUCCEDED'(state, post) {
-      state.post = post
+    'posts/REPLACE_SUCCEDED'(state, post) {
+      const idx = state.posts.findIndex(p => p.id === post.id)
+      state.posts[idx] = post
       state.loading = false
     },
-    'posts/FIND_FAILED'(state, error = 'Something went wrong') {
+    'posts/REPLACE_FAILED'(state, error = 'Something went wrong') {
+      state.error = error
+      state.loading = false
+    },
+    'posts/REMOVE_REQUESTED'(state) {
+      state.error = null
+      state.loading = true
+    },
+    'posts/REMOVE_SUCCEDED'(state, post) {
+      state.posts.$remove(post)
+      state.loading = false
+    },
+    'posts/REMOVE_FAILED'(state, error = 'Something went wrong') {
       state.error = error
       state.loading = false
     }
@@ -52,6 +78,8 @@ export const postsMiddleware = {
     switch(type) {
       case 'posts/FETCH_SUCCEDED':
       case 'posts/STORE_SUCCEDED':
+      case 'posts/REPLACE_SUCCEDED':
+      case 'posts/REMOVE_SUCCEDED':
         localStorage.setItem('posts', JSON.stringify(posts))
         break
     }
@@ -95,8 +123,30 @@ export const store = ({ dispatch }, post) => {
 
   Vue.http.post('posts', post).then(({ data:post }) => {
     dispatch('posts/STORE_SUCCEDED', post)
-    dispatch('router/ROUTE_CHANGED', { path: '/posts/' + post.id })
+    dispatch('router/ROUTE_CHANGED', { path: `/posts/${post.id}` })
   }).catch(({ data: { message:error } }) => {
     dispatch('posts/STORE_FAILED', error)
+  })
+}
+
+export const replace = ({ dispatch }, post) => {
+  dispatch('posts/REPLACE_REQUESTED')
+
+  Vue.http.put(`posts/${post.id}`, post).then(({ data:post }) => {
+    dispatch('posts/REPLACE_SUCCEDED', post)
+    dispatch('router/ROUTE_CHANGED', { path: `/posts/${post.id}` })
+  }).catch(({ data: { message:error } }) => {
+    dispatch('posts/REPLACE_FAILED', error)
+  })
+}
+
+export const remove = ({ dispatch }, post) => {
+  dispatch('posts/REMOVE_REQUESTED')
+
+  Vue.http.delete(`posts/${post.id}`).then(() => {
+    dispatch('posts/REMOVE_SUCCEDED', post)
+    dispatch('router/ROUTE_CHANGED', { path: '/blog' })
+  }).catch(({ data: { message:error } }) => {
+    dispatch('posts/REMOVE_FAILED', error)
   })
 }

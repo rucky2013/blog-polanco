@@ -5,23 +5,22 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class DB {
+public class Db {
 
-    private static DB instance;
+    private static Db instance;
     private MysqlDataSource source;
     private Connection connection;
 
-    private DB() {
+    private Db() {
         source = new MysqlDataSource();
         source.setServerName("localhost");
-        source.setPort(3306);
         source.setDatabaseName("blog_polanco");
         source.setUser("root");
     }
 
-    public static DB getInstance() {
+    public static Db getInstance() {
         if (instance == null)
-            instance = new DB();
+            instance = new Db();
         return instance;
     }
 

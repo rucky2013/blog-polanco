@@ -17,8 +17,8 @@ export default {
         </label>
 
         <label>
-          <span>Content</span>
-          <textarea placeholder="Content" v-model="post.body"></textarea>
+          <span>Body</span>
+          <textarea placeholder="Body" v-model="post.body"></textarea>
         </label>
 
         <output v-if="!!error" v-text="error"></output>

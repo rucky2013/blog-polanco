@@ -7,7 +7,7 @@ export default {
   template: `
     <div id="shell">
       <app-header></app-header>
-      <main>
+      <main id="main">
         <router-view keep-alive></router-view>
       </main>
     </div>
